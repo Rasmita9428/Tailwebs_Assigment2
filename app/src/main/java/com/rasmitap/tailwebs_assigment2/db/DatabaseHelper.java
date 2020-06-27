@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.rasmitap.tailwebs_assigment2.model.Datamodel;
 import com.rasmitap.tailwebs_assigment2.model.LoginData;
 
 import java.util.ArrayList;
@@ -125,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // return user list
         return userList;
     }
-    public boolean checkUser(String email, String password) {
+    public boolean checkUser(String username, String password) {
 
         // array of columns to fetch
         String[] columns = {
@@ -133,8 +132,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_USER_PASSWORD
         };
         SQLiteDatabase db = this.getReadableDatabase();
-        String selection = COLUMN_USER_NAME + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ? ";
-        String[] selectionArgs = {email, password};
+        String selection = COLUMN_USER_NAME + " LIKE ?" + " AND " + COLUMN_USER_PASSWORD + " = ? ";
+        String[] selectionArgs = {username, password};
         Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
@@ -153,7 +152,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return false;
     }
-    public boolean checkUserName(String email)
+    public boolean checkUserName(String username)
     {
 
         // array of columns to fetch
@@ -161,8 +160,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_USER_NAME,
         };
         SQLiteDatabase db = this.getReadableDatabase();
-        String selection = COLUMN_USER_NAME  + " = ? ";
-        String[] selectionArgs = {email};
+        String selection = COLUMN_USER_NAME  + " LIKE ? ";
+        String[] selectionArgs = {username };
         Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
@@ -171,6 +170,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,                       //filter by row groups
                 null);                      //The sort order
 
+        Log.e("Register user quary", String.valueOf(cursor));
+
         int cursorCount = cursor.getCount();
 
         cursor.close();
@@ -178,7 +179,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursorCount > 0) {
             return true;
         }
-
         return false;
     }
 

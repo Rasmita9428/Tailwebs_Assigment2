@@ -23,7 +23,7 @@ import com.rasmitap.tailwebs_assigment2.utils.GlobalMethods;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     TextView txt_login_title, txt_login_desc, btn_login, txt_signup_login;
 
-    EditText edt_email_login, edt_password_login, edt_number_login;
+    EditText edt_username_login, edt_password_login, edt_number_login;
 
     private long lastClickTime = 0;
     private DatabaseHelper databaseHelper;
@@ -36,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         txt_login_title = findViewById(R.id.txt_login_title);
         txt_login_desc = findViewById(R.id.txt_login_desc);
         btn_login = findViewById(R.id.btn_login);
-        edt_email_login = findViewById(R.id.edt_email_login);
+        edt_username_login = findViewById(R.id.edt_username_login);
         edt_password_login = findViewById(R.id.edt_password_login);
         edt_number_login = findViewById(R.id.edt_number_login);
         txt_signup_login = findViewById(R.id.txt_signup_login);
@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if (edt_email_login.getText().toString().equalsIgnoreCase("")) {
+                    if (edt_username_login.getText().toString().equalsIgnoreCase("")) {
                         GlobalMethods.Dialog(RegisterActivity.this, "Please enter username");
                     } else if (edt_password_login.getText().toString().equalsIgnoreCase("")) {
                         GlobalMethods.Dialog(RegisterActivity.this, "Please enter password");
@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     } else if (edt_number_login.getText().toString().length() != 10) {
                         GlobalMethods.Dialog(RegisterActivity.this, "Please enter valid phone number");
                     } else {
-                        RegisterApi(edt_email_login.getText().toString(), edt_password_login.getText().toString(), edt_number_login.getText().toString());
+                        RegisterApi(edt_username_login.getText().toString(), edt_password_login.getText().toString(), edt_number_login.getText().toString());
 
                     }
                     break;
@@ -91,18 +91,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public void RegisterApi(final String email, final String password, final String phone) {
+    public void RegisterApi(final String username, final String password, final String phone) {
         final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.show();
-        if (databaseHelper.checkUserName(email)) {
+        if (databaseHelper.checkUserName(username)) {
             GlobalMethods.Dialog(RegisterActivity.this, "Username Already Exist!");
             progressDialog.dismiss();
-        } else if (databaseHelper.checkUser(email, password)) {
+        } else if (databaseHelper.checkUser(username, password)) {
             GlobalMethods.Dialog(RegisterActivity.this, "Username and Password Already Exist!");
             progressDialog.dismiss();
         } else {
-            user.setUsername(email);
+            user.setUsername(username);
             user.setPassword(password);
             user.setPhone(phone);
             databaseHelper.addUser(user);

@@ -1,11 +1,9 @@
 package com.rasmitap.tailwebs_assigment2.view;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
@@ -23,16 +21,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.rasmitap.tailwebs_assigment2.R;
 import com.rasmitap.tailwebs_assigment2.db.DatabaseHelper;
-import com.rasmitap.tailwebs_assigment2.model.Datamodel;
 import com.rasmitap.tailwebs_assigment2.model.LoginData;
 import com.rasmitap.tailwebs_assigment2.utils.ConstantStore;
-import com.rasmitap.tailwebs_assigment2.utils.GPSTracker;
 import com.rasmitap.tailwebs_assigment2.utils.GlobalMethods;
 import com.rasmitap.tailwebs_assigment2.utils.Utility;
 
@@ -48,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseHelper databaseHelper;
     private long mLastClickTime = 0;
     String Username;
-    GPSTracker gpsTracker;
-    FusedLocationProviderClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar_logout = findViewById(R.id.toolbar_logout);
         recycler_userlist.setHasFixedSize(true);
         Username = Utility.getStringSharedPreferences(getApplicationContext(), ConstantStore.UserName);
-        gpsTracker = new GPSTracker(MainActivity.this);
-        client = LocationServices.getFusedLocationProviderClient(this);
         databaseHelper = new DatabaseHelper(MainActivity.this);
 
         ListofData = databaseHelper.getAllUser();
@@ -104,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     MapActivity.class);
                             startActivity(intent);
                         } else {
-                            gpsTracker.showSettingsAlert();
+                            GlobalMethods.showSettingsAlert(MainActivity.this);
                             //gpsTracker.getLocation();
                         }
                     }
@@ -223,27 +214,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         wlp.gravity = Gravity.CENTER;
         window.setAttributes(wlp);
 
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //  permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
-
-        switch (requestCode) {
-            case ConstantStore.PERMISSION_CODE:
-                if (GlobalMethods.isPermissionNotGranted(MainActivity.this, permissions)) {
-                    GlobalMethods.whichPermisionNotGranted(MainActivity.this, permissions, grantResults);
-                } else {
-                    //                    mapFragment.getMapAsync(ContactUsFragment.this);
-                    gpsTracker.getLocation();
-
-                }
-                break;
-            default:
-                break;
-        }
     }
 
 }

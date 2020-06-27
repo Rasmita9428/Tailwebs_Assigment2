@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="You Want to show your Current location on map ?"
+            android:text="Do you want to see current location on map?"
             android:textColor="@color/black"
             android:textSize="@dimen/_18sdp" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/continue_btn_back"
-            android:text="Get Location"
+            android:text="Show Location"
             android:gravity="center"
             android:textAllCaps="false"
             android:layout_marginTop="@dimen/_10sdp"

@@ -10,7 +10,7 @@
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/color__back"
         android:gravity="center"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -32,7 +32,7 @@
                 android:scrollHorizontally="true"
                 android:focusableInTouchMode="true"
                 android:ellipsize="marquee"
-                android:text="Register Student List"
+                android:text="Registered Users"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"
@@ -43,7 +43,7 @@
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="end|center"
                 android:scaleType="fitXY"
-                android:layout_marginRight="@dimen/_2sdp"
+                android:layout_marginRight="@dimen/_5sdp"
                 android:textSize="@dimen/_10sdp"
                 android:textColor="@color/white"
                 android:text="Logout" />
@@ -52,45 +52,10 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_40sdp"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_header"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:text="User Name"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_3sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_header"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:layout_weight="1"
-            android:text="Phone No."
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_3sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"/>
-
-    </LinearLayout>
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/_65sdp"
+        android:layout_marginTop="@dimen/_40sdp"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
@@ -107,7 +72,8 @@
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         app:fabSize="normal"
-        android:src="@drawable/ic_plus"
+        android:background="@color/color_title_text"
+        android:src="@drawable/marker"
         app:layout_anchor="@id/container"
         app:layout_anchorGravity="bottom|end"/>
 

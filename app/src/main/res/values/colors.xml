@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-
-    <color name="color_continue_back">#E0B314</color>
+    <color name="color_continue_back">#CFA613</color>
+    <color name="color__back">#E0B314</color>
     <color name="color_black_text">#1B1B1B</color>
     <color name="color_fb_back">#4861A8</color>
     <color name="color_google_back">#D35E2A</color>
@@ -14,8 +14,6 @@
     <color name="color_edittext_back">#F8FAFC</color>
     <color name="color_title_text">#8491A5</color>
     <color name="color_edittext_border">#E6E9ED</color>
-    <color name="color_transparent">#00000000</color>
-    <color name="color_pink">#7F8DA2</color>
     <color name="transparent">#00000000</color>
 
 </resources>

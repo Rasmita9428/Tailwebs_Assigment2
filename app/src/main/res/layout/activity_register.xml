@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/app_bg"
-    tools:context=".Views.activity.lOGINActivity">
+    tools:context=".view.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="Register with your account"
+            android:text="Register with your details"
             android:textColor="@color/black"
             android:textSize="@dimen/_18sdp" />
 
@@ -35,12 +35,12 @@
             android:id="@+id/txt_login_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter Your Register Credentials"
+            android:text="Enter your details"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp" />
 
         <EditText
-            android:id="@+id/edt_email_login"
+            android:id="@+id/edt_username_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:text="Already Register"
+                android:text="Already Registered?"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
                 android:textSize="@dimen/_14sdp"/>

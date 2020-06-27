@@ -1,11 +1,14 @@
 package com.rasmitap.tailwebs_assigment2.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,19 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 
 import com.rasmitap.tailwebs_assigment2.R;
 import com.rasmitap.tailwebs_assigment2.view.LoginActivity;
 import com.rasmitap.tailwebs_assigment2.view.MainActivity;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class GlobalMethods {
     public static void Dialog(final Context context, final String msg) {
@@ -69,6 +65,37 @@ public class GlobalMethods {
         dialog.show();
 
 
+    }
+    public static void showSettingsAlert(final Context mContext) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+
+        // Setting DialogHelp Title
+        alertDialog.setTitle("GPS is settings");
+
+        // Setting DialogHelp Message
+        alertDialog
+                .setMessage("GPS is not enabled. Do you want to go to settings menu?");
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        mContext.startActivity(intent);
+                    }
+                });
+
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
