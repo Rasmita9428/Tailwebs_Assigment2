@@ -40,7 +40,7 @@
             android:textSize="@dimen/_10sdp" />
 
         <EditText
-            android:id="@+id/edt_email_login"
+            android:id="@+id/edt_user_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"

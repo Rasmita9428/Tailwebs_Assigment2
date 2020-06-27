@@ -3,6 +3,10 @@ package com.rasmitap.tailwebs_assigment2.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -16,19 +20,16 @@ import android.widget.TextView;
 
 
 import com.rasmitap.tailwebs_assigment2.R;
+import com.rasmitap.tailwebs_assigment2.view.LoginActivity;
+import com.rasmitap.tailwebs_assigment2.view.MainActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by Dip Patel on 12/6/18.
- */
 public class GlobalMethods {
-
-
-    public static void Dialog(Context context, String msg) {
+    public static void Dialog(final Context context, final String msg) {
 
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -39,15 +40,21 @@ public class GlobalMethods {
         TextView txt_dialog_ok = dialog.findViewById(R.id.txt_dialog_ok);
 
         txt_dialog_msg.setText(msg);
-
-//        txt_dialog_msg.setTypeface(SetFontTypeFace.setClanPro_News(context));
-//        txt_dialog_ok.setTypeface(SetFontTypeFace.setClanPro_Bold(context));
-
         txt_dialog_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                dialog.dismiss();
+                if(msg.equalsIgnoreCase("User Login Successfully")){
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+                }else if(msg.equalsIgnoreCase("User Register Successfully")){
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+
+                }else{
+                    dialog.dismiss();
+
+                }
 
             }
         });
@@ -64,61 +71,22 @@ public class GlobalMethods {
 
     }
 
-    public static void hideKeyboard(Activity activity) {
-        try {
-            View view = activity.getCurrentFocus();
-            if (view != null) {
-                view.clearFocus();
-                InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static boolean isPermissionNotGranted(Context context, String[] permissions) {
+        boolean flag = false;
+        for (int i = 0; i < permissions.length; i++) {
+            if (context.checkSelfPermission(permissions[i]) != PackageManager.PERMISSION_GRANTED) {
+                flag = true;
+                break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        return flag;
     }
-
-    public static void setupUI(View view, final Activity activity) {
-
-        // Set up touch listener for non-text box views to hide keyboard.
-        if (!(view instanceof EditText)) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideKeyboard(activity);
-                    return false;
-                }
-            });
-        }
-
-        //If a layout container, iterate over children and seed recursion.
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                View innerView = ((ViewGroup) view).getChildAt(i);
-                setupUI(innerView,activity);
+    public static void whichPermisionNotGranted(Context context, String[] permissions, int[] grantResults) {
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                // throw  new UnknownError("ERROR==>>>>Authentication Permission Not Enabled");
             }
         }
     }
-
-    public static String changeDateFormat(String date) {
-        String outputDate = null;
-        SimpleDateFormat output = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
-        SimpleDateFormat input = new SimpleDateFormat("EEE MMM dd, yyyy", Locale.ENGLISH);
-        try {
-
-
-            Date oneWayTripDate = input.parse(date);// parse input
-
-
-            //Crashlytics.logException(new Throwable("this is issue:"+oneWayTripDate.toString()));
-            Log.e("", "datenewinfunction : " + date.toString());// format output
-            outputDate = output.format(oneWayTripDate);
-        } catch (ParseException e) {
-
-
-            outputDate = date;
-
-            e.printStackTrace();
-        }
-        return outputDate;
-    }
-
 }

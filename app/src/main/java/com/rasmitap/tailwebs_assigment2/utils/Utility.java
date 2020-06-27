@@ -35,7 +35,4 @@ public class Utility {
         editor.commit();
         editor.apply();
     }
-
-
-
-}// final class ends here
+}

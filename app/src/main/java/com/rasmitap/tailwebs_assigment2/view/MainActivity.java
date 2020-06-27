@@ -1,10 +1,16 @@
 package com.rasmitap.tailwebs_assigment2.view;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,58 +23,113 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.rasmitap.tailwebs_assigment2.R;
 import com.rasmitap.tailwebs_assigment2.db.DatabaseHelper;
 import com.rasmitap.tailwebs_assigment2.model.Datamodel;
 import com.rasmitap.tailwebs_assigment2.model.LoginData;
 import com.rasmitap.tailwebs_assigment2.utils.ConstantStore;
+import com.rasmitap.tailwebs_assigment2.utils.GPSTracker;
+import com.rasmitap.tailwebs_assigment2.utils.GlobalMethods;
 import com.rasmitap.tailwebs_assigment2.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
-    RecyclerView recycler_viewtree;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    RecyclerView recycler_userlist;
     RecyclerView.LayoutManager layoutManager;
     List<LoginData> ListofData = new ArrayList<>();
-    FloatingActionButton fab,fab1;
+    FloatingActionButton fab, fab1;
     TextView toolbar_logout;
     DatabaseHelper databaseHelper;
     private long mLastClickTime = 0;
     String Username;
+    GPSTracker gpsTracker;
+    FusedLocationProviderClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recycler_viewtree = findViewById(R.id.recycler_viewtree);
+        recycler_userlist = findViewById(R.id.recycler_userlist);
         toolbar_logout = findViewById(R.id.toolbar_logout);
-        recycler_viewtree.setHasFixedSize(true);
+        recycler_userlist.setHasFixedSize(true);
         Username = Utility.getStringSharedPreferences(getApplicationContext(), ConstantStore.UserName);
-
-
-        String abc = (Utility.getStringSharedPreferences(getApplicationContext(), ConstantStore.dataarray));
+        gpsTracker = new GPSTracker(MainActivity.this);
+        client = LocationServices.getFusedLocationProviderClient(this);
         databaseHelper = new DatabaseHelper(MainActivity.this);
+
         ListofData = databaseHelper.getAllUser();
 
-        Welcome_Adapter welcome_Adapter = new Welcome_Adapter(MainActivity.this, ListofData);
+        UserList_Adapter UserList_Adapter = new UserList_Adapter(MainActivity.this, ListofData);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(MainActivity.this);
-        recycler_viewtree.setLayoutManager(manager);
-        recycler_viewtree.setAdapter(welcome_Adapter);
-        welcome_Adapter.notifyDataSetChanged();
-        fab= findViewById(R.id.fab);
+        recycler_userlist.setLayoutManager(manager);
+        recycler_userlist.setAdapter(UserList_Adapter);
+        UserList_Adapter.notifyDataSetChanged();
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
         toolbar_logout.setOnClickListener(this);
     }
+
+    public boolean isGPSEnabled(Context mContext) {
+        LocationManager lm = (LocationManager)
+                mContext.getSystemService(Context.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-                Intent intent=new Intent(MainActivity.this,
-                        MapActivity.class);
-                startActivity(intent);
+                final Dialog dialog = new Dialog(this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.activity_getlocation);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setCancelable(true);
+                dialog.show();
+
+                TextView btn_getlocation = (TextView) dialog.findViewById(R.id.btn_getlocation);
+
+                btn_getlocation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View arg0) {
+                        dialog.dismiss();
+                        if (isGPSEnabled(MainActivity.this)) {
+                            Location nwLocation = gpsTracker
+                                    .getLocation();
+
+                            if (nwLocation != null) {
+                                double latitude = nwLocation.getLatitude();
+                                double longitude = nwLocation.getLongitude();
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        "Mobile Location (NW): \nLatitude: " + latitude
+                                                + "\nLongitude: " + longitude,
+                                        Toast.LENGTH_LONG).show();
+
+                            }
+                            gpsTracker.getLocation();
+                            Intent intent = new Intent(MainActivity.this,
+                                    MapActivity.class);
+                            startActivity(intent);
+                        } else {
+                            gpsTracker.showSettingsAlert();
+                            gpsTracker.getLocation();
+                        }
+                    }
+                });
+                Window window = dialog.getWindow();
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.windowAnimations = R.style.DialogAnimation;
+                wlp.gravity = Gravity.CENTER;
+                window.setAttributes(wlp);
+
+
                 break;
             case R.id.toolbar_logout:
                 try {
@@ -84,13 +145,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         }
     }
 
-    public class Welcome_Adapter extends RecyclerView.Adapter<Welcome_Adapter.MyHolder> {
-        List<LoginData> ListofViewtree = new ArrayList<>();
+    public class UserList_Adapter extends RecyclerView.Adapter<UserList_Adapter.MyHolder> {
+        List<LoginData> ListofViewUser = new ArrayList<>();
         Context context;
 
 
-        public Welcome_Adapter(MainActivity context, List<LoginData> list) {
-            this.ListofViewtree = list;
+        public UserList_Adapter(MainActivity context, List<LoginData> list) {
+            this.ListofViewUser = list;
             this.context = context;
         }
 
@@ -106,7 +167,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         @Override
         public int getItemCount() {
 
-            return ListofViewtree.size();
+            return ListofViewUser.size();
 
         }
 
@@ -124,8 +185,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         @Override
         public void onBindViewHolder(final MyHolder holder, final int position) {
-                holder.txt_name.setText(ListofViewtree.get(position).getUsername());
-                holder.txt_phone.setText(ListofViewtree.get(position).getPhone());
+            holder.txt_name.setText(ListofViewUser.get(position).getUsername());
+            holder.txt_phone.setText(ListofViewUser.get(position).getPhone());
 
         }
     }
@@ -176,6 +237,27 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         wlp.gravity = Gravity.CENTER;
         window.setAttributes(wlp);
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //  permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+
+        switch (requestCode) {
+            case ConstantStore.PERMISSION_CODE:
+                if (GlobalMethods.isPermissionNotGranted(MainActivity.this, permissions)) {
+                    GlobalMethods.whichPermisionNotGranted(MainActivity.this, permissions, grantResults);
+                } else {
+                    //                    mapFragment.getMapAsync(ContactUsFragment.this);
+                    gpsTracker.getLocation();
+
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }

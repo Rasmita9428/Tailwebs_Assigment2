@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
@@ -31,7 +32,7 @@
                 android:scrollHorizontally="true"
                 android:focusableInTouchMode="true"
                 android:ellipsize="marquee"
-                android:text="Student Result"
+                android:text="Register Student List"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"
@@ -56,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_40sdp"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <TextView
             android:layout_width="match_parent"
@@ -65,20 +66,7 @@
             android:background="@drawable/custom_header"
             android:gravity="center"
             android:textAllCaps="false"
-            android:layout_weight="1"
-            android:text="Student Name"
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_3sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_header"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:text="Subject Name"
+            android:text="User Name"
             android:layout_weight="1"
             android:paddingTop="@dimen/_3sdp"
             android:paddingBottom="@dimen/_3sdp"
@@ -92,7 +80,7 @@
             android:gravity="center"
             android:textAllCaps="false"
             android:layout_weight="1"
-            android:text="Marks"
+            android:text="Phone No."
             android:paddingTop="@dimen/_3sdp"
             android:paddingBottom="@dimen/_3sdp"
             android:textColor="@color/white"
@@ -106,7 +94,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_viewtree"
+            android:id="@+id/recycler_userlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"

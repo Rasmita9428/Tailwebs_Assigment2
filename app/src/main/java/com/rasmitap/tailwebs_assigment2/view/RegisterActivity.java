@@ -23,11 +23,12 @@ import com.rasmitap.tailwebs_assigment2.utils.GlobalMethods;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     TextView txt_login_title, txt_login_desc, btn_login, txt_signup_login;
 
-    EditText edt_email_login, edt_password_login,edt_number_login;
+    EditText edt_email_login, edt_password_login, edt_number_login;
 
     private long lastClickTime = 0;
     private DatabaseHelper databaseHelper;
     LoginData user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         databaseHelper = new DatabaseHelper(RegisterActivity.this);
         user = new LoginData();
 
-    } private long mLastClickTime = 0;
+    }
+
+    private long mLastClickTime = 0;
 
     @Override
     public void onClick(View view) {
@@ -70,15 +73,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         GlobalMethods.Dialog(RegisterActivity.this, "Please enter password");
                     } else if (edt_number_login.getText().toString().equalsIgnoreCase("")) {
                         GlobalMethods.Dialog(RegisterActivity.this, "Please enter phone number");
-                    } else if (edt_number_login.getText().toString().length()!=10) {
+                    } else if (edt_number_login.getText().toString().length() != 10) {
                         GlobalMethods.Dialog(RegisterActivity.this, "Please enter valid phone number");
                     } else {
-                            RegisterApi(edt_email_login.getText().toString(), edt_password_login.getText().toString(),edt_number_login.getText().toString());
+                        RegisterApi(edt_email_login.getText().toString(), edt_password_login.getText().toString(), edt_number_login.getText().toString());
 
                     }
                     break;
                 case R.id.txt_signup_login:
-                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
 
@@ -92,13 +95,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.show();
-        user.setUsername(email);
-        user.setPassword(password);
-        user.setPhone(phone);
-        databaseHelper.addUser(user);
-        progressDialog.dismiss();
+        if (databaseHelper.checkUserName(email)) {
+            MoveDialog(RegisterActivity.this, "Username Already Exist!");
+            progressDialog.dismiss();
+        } else if (databaseHelper.checkUser(email, password)) {
+            MoveDialog(RegisterActivity.this, "Username and Password Already Exist!");
+            progressDialog.dismiss();
+        } else {
+            user.setUsername(email);
+            user.setPassword(password);
+            user.setPhone(phone);
+            databaseHelper.addUser(user);
+            progressDialog.dismiss();
 
-        MoveDialog(RegisterActivity.this,"User Register Successfully");
+            MoveDialog(RegisterActivity.this, "User Register Successfully");
+
+        }
     }
 
     public void MoveDialog(final Context context, String msg) {
@@ -115,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         txt_dialog_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,LoginActivity.class);
+                Intent intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

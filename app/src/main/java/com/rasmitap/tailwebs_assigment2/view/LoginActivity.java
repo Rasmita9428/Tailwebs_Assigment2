@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     TextView txt_login_title, txt_login_desc, btn_login, txt_signup_login;
 
-    EditText edt_email_login, edt_password_login;
+    EditText edt_user_login, edt_password_login;
 
     private long lastClickTime = 0;
     private DatabaseHelper databaseHelper;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         txt_login_title = findViewById(R.id.txt_login_title);
         txt_login_desc = findViewById(R.id.txt_login_desc);
         btn_login = findViewById(R.id.btn_login);
-        edt_email_login = findViewById(R.id.edt_email_login);
+        edt_user_login = findViewById(R.id.edt_user_login);
         edt_password_login = findViewById(R.id.edt_password_login);
         txt_signup_login = findViewById(R.id.txt_signup_login);
 
@@ -71,12 +71,12 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if (edt_email_login.getText().toString().equalsIgnoreCase("")) {
+                    if (edt_user_login.getText().toString().equalsIgnoreCase("")) {
                         GlobalMethods.Dialog(LoginActivity.this, "Please enter username");
                     } else if (edt_password_login.getText().toString().equalsIgnoreCase("")) {
                         GlobalMethods.Dialog(LoginActivity.this, "Please enter password");
                     } else {
-                            LoginApi(edt_email_login.getText().toString(), edt_password_login.getText().toString());
+                            LoginApi(edt_user_login.getText().toString(), edt_password_login.getText().toString());
 
                     }
                     break;
