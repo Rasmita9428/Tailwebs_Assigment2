@@ -96,10 +96,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progressDialog.setMessage("Please Wait...");
         progressDialog.show();
         if (databaseHelper.checkUserName(email)) {
-            MoveDialog(RegisterActivity.this, "Username Already Exist!");
+            GlobalMethods.Dialog(RegisterActivity.this, "Username Already Exist!");
             progressDialog.dismiss();
         } else if (databaseHelper.checkUser(email, password)) {
-            MoveDialog(RegisterActivity.this, "Username and Password Already Exist!");
+            GlobalMethods.Dialog(RegisterActivity.this, "Username and Password Already Exist!");
             progressDialog.dismiss();
         } else {
             user.setUsername(email);

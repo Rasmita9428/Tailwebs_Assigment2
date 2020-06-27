@@ -75,7 +75,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 requestPermissions(permissions, ConstantStore.PERMISSION_CODE);
                 return;
             } else {
-                git remote add origin https://github.com/Rasmita9428/Tailwebs_Assigment2-Geolocation1.git              initMapConponet();
+              initMapConponet();
             }
         } else
 
