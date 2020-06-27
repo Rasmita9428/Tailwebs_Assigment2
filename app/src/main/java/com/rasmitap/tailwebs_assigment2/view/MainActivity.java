@@ -100,26 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(View arg0) {
                         dialog.dismiss();
                         if (isGPSEnabled(MainActivity.this)) {
-                            Location nwLocation = gpsTracker
-                                    .getLocation();
-
-                            if (nwLocation != null) {
-                                double latitude = nwLocation.getLatitude();
-                                double longitude = nwLocation.getLongitude();
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        "Mobile Location (NW): \nLatitude: " + latitude
-                                                + "\nLongitude: " + longitude,
-                                        Toast.LENGTH_LONG).show();
-
-                            }
-                            gpsTracker.getLocation();
                             Intent intent = new Intent(MainActivity.this,
                                     MapActivity.class);
                             startActivity(intent);
                         } else {
                             gpsTracker.showSettingsAlert();
-                            gpsTracker.getLocation();
+                            //gpsTracker.getLocation();
                         }
                     }
                 });
